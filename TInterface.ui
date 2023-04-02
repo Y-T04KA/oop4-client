@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TInterfaceClass</class>
+ <widget class="QMainWindow" name="TInterfaceClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>585</width>
+    <height>507</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TInterface</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>461</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="sizeDropdown">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>10</y>
+      <width>68</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>50</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>585</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="TInterface.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>sizeDropdown</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>tableWidget</receiver>
+   <slot>setWindowTitle(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>553</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>235</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sizeDropdown</sender>
+   <signal>activated(int)</signal>
+   <receiver>tableWidget</receiver>
+   <slot>insertColumn(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>553</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>235</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sizeDropdown</sender>
+   <signal>activated(int)</signal>
+   <receiver>tableWidget</receiver>
+   <slot>insertRow(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>553</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>235</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sizeDropdown</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TInterfaceClass</receiver>
+   <slot>resizeInput()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>527</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>513</x>
+     <y>61</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>resizeInput()</slot>
+ </slots>
+</ui>
