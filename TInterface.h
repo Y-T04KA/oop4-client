@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include <qlabel.h>
+#include <qpushbutton.h>
 #include "ui_TInterface.h"
 #include <common.h>
 
@@ -14,6 +15,7 @@ public:
     ~TInterface();
     void setupDropdown();
     QLabel* output;
+    QPushButton* detButton,*rankButton,*transButton;
     
 
 private:

@@ -1,4 +1,5 @@
 #include "TInterface.h"
+#include "qmessagebox.h"
 
 TInterface::TInterface(QWidget *parent)
     : QMainWindow(parent)
@@ -6,10 +7,19 @@ TInterface::TInterface(QWidget *parent)
     ui.setupUi(this);
     setupDropdown();
     output = new QLabel(this);
-    output->setGeometry(10, 190, 280, 25);
+    output->setGeometry(10, 200, 280, 50);
     ui.tableWidget->setColumnCount(2);
     ui.tableWidget->setRowCount(2);
+    detButton = new QPushButton("Определитель",this);
+    detButton->setGeometry(484, 50, 91, 24);
+    rankButton = new QPushButton("Ранг", this);
+    rankButton->setGeometry(484, 100, 91, 24);
+    transButton = new QPushButton("Транспон.", this);
+    transButton->setGeometry(484, 150, 91, 24);
 
+    connect(detButton, SIGNAL(pressed()), this, SLOT(detRequest()));
+    connect(rankButton, SIGNAL(pressed()), this, SLOT(rankRequest()));
+    connect(transButton, SIGNAL(pressed()), this, SLOT(transRequest()));
 }
 
 TInterface::~TInterface()
@@ -51,23 +61,36 @@ void TInterface::resizeInput() {
 //}
 
 void TInterface::detRequest() {
+    
     QString msg;//SIZE MODE DATA
     int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
+    bool fix = false;
     int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
     QString tmp;
     QStringList res;
     msg << QString().setNum(cc);//SIZE
     msg << QString().setNum(1);//MODE
+    QMessageBox msgBox;
+    msgBox.setText("Entered detRequest()");
+    //msgBox.exec();
     for (int i = 0; i < cc; i++) {
         for (int j = 0; j < rc; j++) {
             tmp = ui.tableWidget->item(i, j)->text();
+            if (tmp.isEmpty()) {
+                QMessageBox err;
+                err.setText("Missing data");
+                err.exec();
+                fix = true;
+                return;
+            }
             res = tmp.split('/');
             msg << res.first();
             msg << res.last();
-            
+            msgBox.setText(msg);
+           // msgBox.exec();
         }
     }
-    
+    if (fix) { return; }
     //int size = getInput();
    // msg << QString().setNum(size);//SIZE
    // msg << QString().setNum(1);//MODE
@@ -120,6 +143,11 @@ void TInterface::transRequest() {
 }
 
 void TInterface::answer(QString msg) {
+    QMessageBox msgBox;
+    msgBox.setText("went to answer");
+    msgBox.exec();
+    msgBox.setText(msg);
+    msgBox.exec();
     output->setText(msg);
 
 }

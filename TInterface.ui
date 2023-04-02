@@ -34,19 +34,6 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="detButton">
-    <property name="geometry">
-     <rect>
-      <x>484</x>
-      <y>50</y>
-      <width>91</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Определитель</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
