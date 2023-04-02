@@ -1,10 +1,8 @@
 #include "TInterface.h"
-#include <QtWidgets/QApplication>
+#include <application.h>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    TInterface w;
-    w.show();
+    TApplication a(argc, argv);
     return a.exec();
 }

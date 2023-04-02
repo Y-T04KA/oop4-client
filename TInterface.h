@@ -17,6 +17,7 @@ public:
 private:
     Ui::TInterfaceClass ui;
     QVariant two,three,four;
+    std::vector<int[2]> Data;
 
 private slots:
     void resizeInput();
