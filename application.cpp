@@ -14,5 +14,5 @@ void TApplication::fromComms(QByteArray msg) {
 }
 
 void TApplication::toComms(QString msg) {
-	comm->send(QByteArray().append(msg));
+	//comm->send(QByteArray().append(msg));
 }

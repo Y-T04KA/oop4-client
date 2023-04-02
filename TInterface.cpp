@@ -5,7 +5,8 @@ TInterface::TInterface(QWidget *parent)
 {
     ui.setupUi(this);
     setupDropdown();
-    
+    output = new QLabel(this);
+    output->setGeometry(10, 190, 280, 25);
     ui.tableWidget->setColumnCount(2);
     ui.tableWidget->setRowCount(2);
 
@@ -30,22 +31,95 @@ void TInterface::resizeInput() {
     ui.tableWidget->setRowCount(size-1);//size when 2 is actually 3???
 }
 
-void TInterface::getInput() {
-    int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount(),tabPtr=0;
+//int TInterface::getInput() {
+    //int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount(),tabPtr=0;
+    //int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
+    //QString tmp;
+    //QStringList res;
+    //int buf[2]{};
+    //Data.clear();
+    //for (int i = 0; i < cc; i++) {
+    //    for (int j = 0; j < rc; j++) {
+    //        tmp = ui.tableWidget->item(i, j)->text();
+    //        res = tmp.split('/');
+    //        buf[0] = res.first().toInt();
+    //        buf[1] = res.last().toInt();
+    //        Data.push_back(buf);
+    //    }
+    //}
+    //return cc;
+//}
+
+void TInterface::detRequest() {
+    QString msg;//SIZE MODE DATA
+    int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
     int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
     QString tmp;
     QStringList res;
-    int buf[2]{};
-    Data.clear();
+    msg << QString().setNum(cc);//SIZE
+    msg << QString().setNum(1);//MODE
     for (int i = 0; i < cc; i++) {
         for (int j = 0; j < rc; j++) {
             tmp = ui.tableWidget->item(i, j)->text();
             res = tmp.split('/');
-            buf[0] = res.first().toInt();
-            buf[1] = res.last().toInt();
-            Data.push_back(buf);
+            msg << res.first();
+            msg << res.last();
+            
         }
     }
-
+    
+    //int size = getInput();
+   // msg << QString().setNum(size);//SIZE
+   // msg << QString().setNum(1);//MODE
+    //for (auto &var : Data)
+   // {
+   //     msg << QString().setNum(var[0]);//DATA
+   //     msg << QString().setNum(var[1]);
+   // }
+    emit request(msg);
 }
 
+void TInterface::rankRequest() {
+    QString msg;//SIZE MODE DATA
+    int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
+    int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
+    QString tmp;
+    QStringList res;
+    msg << QString().setNum(cc);//SIZE
+    msg << QString().setNum(2);//MODE
+    for (int i = 0; i < cc; i++) {
+        for (int j = 0; j < rc; j++) {
+            tmp = ui.tableWidget->item(i, j)->text();
+            res = tmp.split('/');
+            msg << res.first();
+            msg << res.last();
+
+        }
+    }
+    emit request(msg);
+}
+
+void TInterface::transRequest() {
+    QString msg;//SIZE MODE DATA
+    int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
+    int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
+    QString tmp;
+    QStringList res;
+    msg << QString().setNum(cc);//SIZE
+    msg << QString().setNum(3);//MODE
+    for (int i = 0; i < cc; i++) {
+        for (int j = 0; j < rc; j++) {
+            tmp = ui.tableWidget->item(i, j)->text();
+            res = tmp.split('/');
+            msg << res.first();
+            msg << res.last();
+
+        }
+    }
+    emit request(msg);
+}
+
+void TInterface::answer(QString msg) {
+    output->setText(msg);
+
+}

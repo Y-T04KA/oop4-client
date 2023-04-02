@@ -3,6 +3,7 @@
 #include <QTNetwork/QUdpSocket>
 #include <QTNetwork/QHostAddress>
 
+
 struct TCommParams {
 	QHostAddress rHost;
 	quint16 rPort;
