@@ -13,9 +13,6 @@ bool TComms::isReady(){
 
 void TComms::send(QByteArray msg) {
 	if (ready) {
-		QMessageBox msgBox;
-		msgBox.setText("reached writeDatagram()");
-		msgBox.exec();
 		writeDatagram(msg, params.sHost, params.sPort);
 	}
 }
@@ -25,9 +22,6 @@ void TComms::receive() {
 		quint64 size = pendingDatagramSize();
 		QByteArray msg(size, '\0');
 		readDatagram(msg.data(), size);
-		QMessageBox msgBox;
-		msgBox.setText(QString().setNum(size));
-		msgBox.exec();
 		emit received(msg);
 	}
 }

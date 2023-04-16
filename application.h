@@ -4,12 +4,12 @@
 #include <TInterface.h>
 #include <Comms.h>
 
-class TApplication : public QApplication {
+class TClientApp : public QApplication {
 	Q_OBJECT
 	TComms* comm;
-	TInterface* interface;
+	TClientInterface* interface;
 public:
-	TApplication(int, char**);
+	TClientApp(int, char**);
 public slots:
 	void fromComms(QByteArray);
 	void toComms(QString);

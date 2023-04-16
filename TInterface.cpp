@@ -1,7 +1,7 @@
 #include "TInterface.h"
 #include "qmessagebox.h"
 
-TInterface::TInterface(QWidget *parent)
+TClientInterface::TClientInterface(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
@@ -22,10 +22,10 @@ TInterface::TInterface(QWidget *parent)
     connect(transButton, SIGNAL(pressed()), this, SLOT(transRequest()));
 }
 
-TInterface::~TInterface()
+TClientInterface::~TClientInterface()
 {}
 
-void TInterface::setupDropdown() {
+void TClientInterface::setupDropdown() {
     ui.sizeDropdown->addItem("2", two);
     ui.sizeDropdown->addItem("3", three);
     ui.sizeDropdown->addItem("4", four);
@@ -35,32 +35,14 @@ void TInterface::setupDropdown() {
     
 }
 
-void TInterface::resizeInput() {
+void TClientInterface::resizeInput() {
     int size = ui.sizeDropdown->currentText().toInt();//debugger says it returns 3, but to have 2x2 matrix i need to decrease 2 to 1???
     ui.tableWidget->setColumnCount(size-1);
     ui.tableWidget->setRowCount(size-1);//size when 2 is actually 3???
 }
 
-//int TInterface::getInput() {
-    //int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount(),tabPtr=0;
-    //int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
-    //QString tmp;
-    //QStringList res;
-    //int buf[2]{};
-    //Data.clear();
-    //for (int i = 0; i < cc; i++) {
-    //    for (int j = 0; j < rc; j++) {
-    //        tmp = ui.tableWidget->item(i, j)->text();
-    //        res = tmp.split('/');
-    //        buf[0] = res.first().toInt();
-    //        buf[1] = res.last().toInt();
-    //        Data.push_back(buf);
-    //    }
-    //}
-    //return cc;
-//}
 
-void TInterface::detRequest() {
+void TClientInterface::detRequest() {
     
     QString msg;//SIZE MODE DATA
     int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
@@ -70,9 +52,7 @@ void TInterface::detRequest() {
     QStringList res;
     msg << QString().setNum(cc);//SIZE
     msg << QString().setNum(1);//MODE
-    QMessageBox msgBox;
-    msgBox.setText("Entered detRequest()");
-    //msgBox.exec();
+    
     for (int i = 0; i < cc; i++) {
         for (int j = 0; j < rc; j++) {
             tmp = ui.tableWidget->item(i, j)->text();
@@ -86,23 +66,15 @@ void TInterface::detRequest() {
             res = tmp.split('/');
             msg << res.first();
             msg << res.last();
-            msgBox.setText(msg);
-           // msgBox.exec();
+            
         }
     }
     if (fix) { return; }
-    //int size = getInput();
-   // msg << QString().setNum(size);//SIZE
-   // msg << QString().setNum(1);//MODE
-    //for (auto &var : Data)
-   // {
-   //     msg << QString().setNum(var[0]);//DATA
-   //     msg << QString().setNum(var[1]);
-   // }
+    
     emit request(msg);
 }
 
-void TInterface::rankRequest() {
+void TClientInterface::rankRequest() {
     QString msg;//SIZE MODE DATA
     int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
     int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
@@ -122,7 +94,7 @@ void TInterface::rankRequest() {
     emit request(msg);
 }
 
-void TInterface::transRequest() {
+void TClientInterface::transRequest() {
     QString msg;//SIZE MODE DATA
     int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
     int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
@@ -142,12 +114,8 @@ void TInterface::transRequest() {
     emit request(msg);
 }
 
-void TInterface::answer(QString msg) {
-    QMessageBox msgBox;
-    msgBox.setText("went to answer");
-    msgBox.exec();
-    msgBox.setText(msg);
-    msgBox.exec();
+void TClientInterface::answer(QString msg) {
+    
     output->setText(msg);
 
 }

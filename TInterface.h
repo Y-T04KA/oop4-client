@@ -6,13 +6,13 @@
 #include "ui_TInterface.h"
 #include <common.h>
 
-class TInterface : public QMainWindow
+class TClientInterface : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    TInterface(QWidget *parent = nullptr);
-    ~TInterface();
+    TClientInterface(QWidget *parent = nullptr);
+    ~TClientInterface();
     void setupDropdown();
     QLabel* output;
     QPushButton* detButton,*rankButton,*transButton;
@@ -21,13 +21,11 @@ public:
 private:
     Ui::TInterfaceClass ui;
     QVariant two,three,four;
-    //std::vector<int[2]> Data;
 public slots:
     void answer(QString);
 
 private slots:
     void resizeInput();
-    //int getInput();
     void detRequest();
     void rankRequest();
     void transRequest();
