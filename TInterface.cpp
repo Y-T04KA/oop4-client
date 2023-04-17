@@ -3,7 +3,7 @@
 
 TClientInterface::TClientInterface(QWidget *parent)
     : QMainWindow(parent)
-{
+{/
     ui.setupUi(this);
     setupDropdown();
     output = new QLabel(this);
