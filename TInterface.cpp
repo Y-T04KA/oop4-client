@@ -47,7 +47,6 @@ void TClientInterface::detRequest() {
     if (!cellsFilled(cc, rc)) return; //cancel if there are empty cells
     QString msg;//SIZE MODE DATA
     
-    bool fix = false;
     int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
     QString tmp;
     QStringList res;
@@ -58,18 +57,23 @@ void TClientInterface::detRequest() {
     
     for (int i = 0; i < cc; i++) {
         for (int j = 0; j < rc; j++) {
-            if (ui.tableWidget->item(i, j)) {
-                tmp = ui.tableWidget->item(i, j)->text();
-                //tmp.contains('/');
-                res = tmp.split('/');
-                msg << res.first();
-                msg << res.last();
+            if (ourType == typeDetector(ui.tableWidget->item(i, j)->text())) {
+                //tmp = ui.tableWidget->item(i, j)->text();
+                //res = tmp.split('/');
+                //msg << res.first();
+                //msg << res.last();
+                msg << cellDataHandler(ui.tableWidget->item(i, j)->text(), ourType);
+            }
+            else {
+                QMessageBox q;
+                q.setText("type mismatch");
+                q.exec();
+                return;
             }
         }
     }
-    if (fix) { return; }
     
-    //emit request(msg);
+    emit request(msg);
 }
 
 void TClientInterface::rankRequest() {
@@ -113,24 +117,13 @@ void TClientInterface::transRequest() {
 }
 
 void TClientInterface::answer(QString msg) {
-    
     output->setText(msg);
-
 }
 
 int TClientInterface::typeDetector(QString i) {
-    //QMessageBox type;
-    //tmp = ui.tableWidget->item(0, 0)->text();
-    if (i.contains("/")) {
-        //type.setText("it's rational");
-        return 2;
-    }
-    else
-        if (i.contains("i")) {
-            //type.setText("it's complex");
-            return 1;
-        }
-        else return 0;
+    if (i.contains("/"))return 2;
+    else if (i.contains("i")) return 1;
+    else return 0;
 }
 
 bool TClientInterface::cellsFilled(int cc, int rc) {
@@ -150,4 +143,29 @@ bool TClientInterface::cellsFilled(int cc, int rc) {
         }
     }
     return true;
+}
+
+QString TClientInterface::cellDataHandler(QString data, int type) {
+    QString retval;
+    QStringList res;
+    switch (type)
+    {
+    case 1://rational
+        res = data.split('+');
+        retval = res.first();
+        retval += separator;
+        res.last().chop(1);//remove 'i' symbol
+        retval += res.last();
+        break;
+    case 2://complex
+        res = data.split('/');
+        retval = res.first();
+        retval += separator;//so it needs separated values with ;, but last ; will be appended by caller
+        retval += res.last();
+        break;
+    default://double
+        retval = data;
+        break;
+    }
+    return retval;
 }

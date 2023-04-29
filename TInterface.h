@@ -23,6 +23,7 @@ private:
     QVariant two,three,four;
     int typeDetector(QString);
     bool cellsFilled(int, int);
+    QString cellDataHandler(QString, int);
 public slots:
     void answer(QString);
 
