@@ -3,7 +3,7 @@
 
 TClientInterface::TClientInterface(QWidget *parent)
     : QMainWindow(parent)
-{/
+{  
     ui.setupUi(this);
     setupDropdown();
     output = new QLabel(this);
@@ -43,35 +43,33 @@ void TClientInterface::resizeInput() {
 
 
 void TClientInterface::detRequest() {
-    
-    QString msg;//SIZE MODE DATA
     int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
+    if (!cellsFilled(cc, rc)) return; //cancel if there are empty cells
+    QString msg;//SIZE MODE DATA
+    
     bool fix = false;
     int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
     QString tmp;
     QStringList res;
     msg << QString().setNum(cc);//SIZE
-    msg << QString().setNum(1);//MODE
+
+    int ourType = typeDetector(ui.tableWidget->item(0, 0)->text());
+    msg << QString().setNum(1+ourType);//IMPORTANT:MODE
     
     for (int i = 0; i < cc; i++) {
         for (int j = 0; j < rc; j++) {
-            tmp = ui.tableWidget->item(i, j)->text();
-            if (tmp.isEmpty()) {
-                QMessageBox err;
-                err.setText("Missing data");
-                err.exec();
-                fix = true;
-                return;
+            if (ui.tableWidget->item(i, j)) {
+                tmp = ui.tableWidget->item(i, j)->text();
+                //tmp.contains('/');
+                res = tmp.split('/');
+                msg << res.first();
+                msg << res.last();
             }
-            res = tmp.split('/');
-            msg << res.first();
-            msg << res.last();
-            
         }
     }
     if (fix) { return; }
     
-    emit request(msg);
+    //emit request(msg);
 }
 
 void TClientInterface::rankRequest() {
@@ -118,4 +116,38 @@ void TClientInterface::answer(QString msg) {
     
     output->setText(msg);
 
+}
+
+int TClientInterface::typeDetector(QString i) {
+    //QMessageBox type;
+    //tmp = ui.tableWidget->item(0, 0)->text();
+    if (i.contains("/")) {
+        //type.setText("it's rational");
+        return 2;
+    }
+    else
+        if (i.contains("i")) {
+            //type.setText("it's complex");
+            return 1;
+        }
+        else return 0;
+}
+
+bool TClientInterface::cellsFilled(int cc, int rc) {
+    QMessageBox fail;
+    for (int i = 0; i < cc; i++) {
+        for (int j = 0; j < rc; j++) {
+            if (!ui.tableWidget->item(i, j)) { 
+                fail.setText("uninitialized cells");
+                fail.exec();
+                return false; 
+            }
+            else if(ui.tableWidget->item(i, j)->text().isEmpty()) {
+                fail.setText("empty cells");
+                fail.exec();
+                return false;
+            }
+        }
+    }
+    return true;
 }

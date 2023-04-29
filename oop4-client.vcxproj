@@ -55,7 +55,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);D;/podelki/oop4-client</IncludePath>
+    <IncludePath>C:\Qt\6.4.3\msvc2019_64\include\QtCore;C:\Qt\6.4.3\msvc2019_64\include\QtWidgets;$(VC_IncludePath);$(WindowsSDK_IncludePath);D;/podelki/oop4-client;C:\Qt\6.4.3\msvc2019_64\include</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);D:/podelki/oop4-client</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
