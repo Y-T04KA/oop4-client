@@ -46,15 +46,10 @@ void TClientInterface::detRequest() {
     int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
     if (!cellsFilled(cc, rc)) return; //cancel if there are empty cells
     QString msg;//SIZE MODE DATA
-    
     int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
-    QString tmp;
-    QStringList res;
     msg << QString().setNum(cc);//SIZE
-
     int ourType = typeDetector(ui.tableWidget->item(0, 0)->text());
     msg << QString().setNum(1+ourType);//IMPORTANT:MODE
-    
     for (int i = 0; i < cc; i++) {
         for (int j = 0; j < rc; j++) {
             if (ourType == typeDetector(ui.tableWidget->item(i, j)->text())) {
@@ -72,7 +67,6 @@ void TClientInterface::detRequest() {
             }
         }
     }
-    
     emit request(msg);
 }
 
@@ -160,7 +154,7 @@ QString TClientInterface::cellDataHandler(QString data, int type) {
     case 2://complex
         res = data.split('/');
         retval = res.first();
-        retval += separator;//so it needs separated values with ;, but last ; will be appended by caller
+        retval += separator;//so it needs separated values with ;, and last ; will be appended by caller
         retval += res.last();
         break;
     default://double
