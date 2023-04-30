@@ -71,40 +71,48 @@ void TClientInterface::detRequest() {
 }
 
 void TClientInterface::rankRequest() {
-    QString msg;//SIZE MODE DATA
     int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
+    if (!cellsFilled(cc, rc)) return; //cancel if there are empty cells
+    QString msg;//SIZE MODE DATA
     int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
-    QString tmp;
-    QStringList res;
     msg << QString().setNum(cc);//SIZE
-    msg << QString().setNum(2);//MODE
+    int ourType = typeDetector(ui.tableWidget->item(0, 0)->text());
+    msg << QString().setNum(4 + ourType);//IMPORTANT:MODE
     for (int i = 0; i < cc; i++) {
         for (int j = 0; j < rc; j++) {
-            tmp = ui.tableWidget->item(i, j)->text();
-            res = tmp.split('/');
-            msg << res.first();
-            msg << res.last();
-
+            if (ourType == typeDetector(ui.tableWidget->item(i, j)->text())) {
+                msg << cellDataHandler(ui.tableWidget->item(i, j)->text(), ourType);
+            }
+            else {
+                QMessageBox q;
+                q.setText("type mismatch");
+                q.exec();
+                return;
+            }
         }
     }
     emit request(msg);
 }
 
 void TClientInterface::transRequest() {
-    QString msg;//SIZE MODE DATA
     int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
+    if (!cellsFilled(cc, rc)) return; //cancel if there are empty cells
+    QString msg;//SIZE MODE DATA
     int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
-    QString tmp;
-    QStringList res;
     msg << QString().setNum(cc);//SIZE
-    msg << QString().setNum(3);//MODE
+    int ourType = typeDetector(ui.tableWidget->item(0, 0)->text());
+    msg << QString().setNum(7 + ourType);//IMPORTANT:MODE
     for (int i = 0; i < cc; i++) {
         for (int j = 0; j < rc; j++) {
-            tmp = ui.tableWidget->item(i, j)->text();
-            res = tmp.split('/');
-            msg << res.first();
-            msg << res.last();
-
+            if (ourType == typeDetector(ui.tableWidget->item(i, j)->text())) {
+                msg << cellDataHandler(ui.tableWidget->item(i, j)->text(), ourType);
+            }
+            else {
+                QMessageBox q;
+                q.setText("type mismatch");
+                q.exec();
+                return;
+            }
         }
     }
     emit request(msg);
