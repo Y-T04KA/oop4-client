@@ -7,7 +7,8 @@ TClientInterface::TClientInterface(QWidget *parent)
     ui.setupUi(this);
     setupDropdown();
     output = new QLabel(this);
-    output->setGeometry(10, 200, 280, 50);
+    output->setGeometry(10, 200, 380, 150);
+    output->setAlignment(Qt::AlignTop);
     ui.tableWidget->setColumnCount(2);
     ui.tableWidget->setRowCount(2);
     detButton = new QPushButton("Определитель",this);
@@ -16,7 +17,7 @@ TClientInterface::TClientInterface(QWidget *parent)
     rankButton->setGeometry(484, 100, 91, 24);
     transButton = new QPushButton("Транспон.", this);
     transButton->setGeometry(484, 150, 91, 24);
-
+    output->setText("Программа сама определяет тип чисел на основе ввода. \nРациональные числа вводятся в формате 1/1, комплексные как 1+0i");
     connect(detButton, SIGNAL(pressed()), this, SLOT(detRequest()));
     connect(rankButton, SIGNAL(pressed()), this, SLOT(rankRequest()));
     connect(transButton, SIGNAL(pressed()), this, SLOT(transRequest()));
@@ -43,82 +44,19 @@ void TClientInterface::resizeInput() {
 
 
 void TClientInterface::detRequest() {
-    int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
-    if (!cellsFilled(cc, rc)) return; //cancel if there are empty cells
-    QString msg;//SIZE MODE DATA
-    int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
-    msg << QString().setNum(cc);//SIZE
-    int ourType = typeDetector(ui.tableWidget->item(0, 0)->text());
-    msg << QString().setNum(1+ourType);//IMPORTANT:MODE
-    for (int i = 0; i < cc; i++) {
-        for (int j = 0; j < rc; j++) {
-            if (ourType == typeDetector(ui.tableWidget->item(i, j)->text())) {
-                //tmp = ui.tableWidget->item(i, j)->text();
-                //res = tmp.split('/');
-                //msg << res.first();
-                //msg << res.last();
-                msg << cellDataHandler(ui.tableWidget->item(i, j)->text(), ourType);
-            }
-            else {
-                QMessageBox q;
-                q.setText("type mismatch");
-                q.exec();
-                return;
-            }
-        }
-    }
-    emit request(msg);
+    if (!messageBuilder(1).isEmpty()) emit request(messageBuilder(1));
 }
 
 void TClientInterface::rankRequest() {
-    int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
-    if (!cellsFilled(cc, rc)) return; //cancel if there are empty cells
-    QString msg;//SIZE MODE DATA
-    int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
-    msg << QString().setNum(cc);//SIZE
-    int ourType = typeDetector(ui.tableWidget->item(0, 0)->text());
-    msg << QString().setNum(4 + ourType);//IMPORTANT:MODE
-    for (int i = 0; i < cc; i++) {
-        for (int j = 0; j < rc; j++) {
-            if (ourType == typeDetector(ui.tableWidget->item(i, j)->text())) {
-                msg << cellDataHandler(ui.tableWidget->item(i, j)->text(), ourType);
-            }
-            else {
-                QMessageBox q;
-                q.setText("type mismatch");
-                q.exec();
-                return;
-            }
-        }
-    }
-    emit request(msg);
+    if (!messageBuilder(4).isEmpty()) emit request(messageBuilder(4));
 }
 
 void TClientInterface::transRequest() {
-    int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
-    if (!cellsFilled(cc, rc)) return; //cancel if there are empty cells
-    QString msg;//SIZE MODE DATA
-    int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
-    msg << QString().setNum(cc);//SIZE
-    int ourType = typeDetector(ui.tableWidget->item(0, 0)->text());
-    msg << QString().setNum(7 + ourType);//IMPORTANT:MODE
-    for (int i = 0; i < cc; i++) {
-        for (int j = 0; j < rc; j++) {
-            if (ourType == typeDetector(ui.tableWidget->item(i, j)->text())) {
-                msg << cellDataHandler(ui.tableWidget->item(i, j)->text(), ourType);
-            }
-            else {
-                QMessageBox q;
-                q.setText("type mismatch");
-                q.exec();
-                return;
-            }
-        }
-    }
-    emit request(msg);
+    if (!messageBuilder(7).isEmpty()) emit request(messageBuilder(7));
 }
 
 void TClientInterface::answer(QString msg) {
+    output->clear();
     output->setText(msg);
 }
 
@@ -170,4 +108,28 @@ QString TClientInterface::cellDataHandler(QString data, int type) {
         break;
     }
     return retval;
+}
+
+QString TClientInterface::messageBuilder(int mode) {
+    int cc = ui.tableWidget->columnCount(), rc = ui.tableWidget->rowCount();
+    if (!cellsFilled(cc, rc)) return ""; //cancel if there are empty cells
+    QString msg;//SIZE MODE DATA
+    int size = cc * rc;//why not just ask sizeDropdown? i can't predict results when click multiple times on same option
+    msg << QString().setNum(cc);//SIZE
+    int ourType = typeDetector(ui.tableWidget->item(0, 0)->text());
+    msg << QString().setNum(mode + ourType);//IMPORTANT:MODE
+    for (int i = 0; i < cc; i++) {
+        for (int j = 0; j < rc; j++) {
+            if (ourType == typeDetector(ui.tableWidget->item(i, j)->text())) {
+                msg << cellDataHandler(ui.tableWidget->item(i, j)->text(), ourType);
+            }
+            else {
+                QMessageBox q;
+                q.setText("type mismatch");
+                q.exec();
+                return "";
+            }
+        }
+    }
+    return msg;
 }

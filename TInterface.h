@@ -24,6 +24,7 @@ private:
     int typeDetector(QString);
     bool cellsFilled(int, int);
     QString cellDataHandler(QString, int);
+    QString messageBuilder(int);
 public slots:
     void answer(QString);
 
